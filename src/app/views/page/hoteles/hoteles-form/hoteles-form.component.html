@@ -1,84 +1,128 @@
-<form class="mb-5" [formGroup]="hotelForm"  (ngSubmit)="saveHotel()">
-  <div>
-    <label for="nombre">Nombre:</label>
-    <input id="nombre" formControlName="nombre"  type="text" />
-  </div>
-  <div>
-    <label for="direccion">Dirección:</label>
-    <input id="direccion" formControlName="direccion" type="text">
-  </div>
-  <div>
-    <label for="ciudad">Ciudad:</label>
-    <input id="ciudad" formControlName="ciudad"  type="text">
-  </div>
-  <div>
-    <label for="pais">País:</label>
-    <input id="pais" formControlName="pais"  type="text">
-  </div>
-  <div>
-    <label for="telefono">Teléfono:</label>
-    <input id="telefono" formControlName="telefono" type="text">
-  </div>
-  <div>
-    <label for="email">Email:</label>
-    <input id="email" formControlName="email" type="email">
-  </div>
-  <div>
-    <label for="clasificacion">Clasificación:</label>
-    <input id="clasificacion" formControlName="clasificacion" type="text">
-  </div>
-  <div formArrayName="servicios" *ngIf="services.length > 0; else noServicios">
-    <label>Servicios:</label>
-    <div *ngFor="let servicio of services" class="form-check">
-      <input type="checkbox" class="form-check-input" id="servicio{{ servicio.id }}" (change)="actualizarServicios({ id: servicio.id, nombre: servicio.nombre })">
-      <label class="form-check-label" for="servicio{{ servicio.id }}">
-        {{ servicio.nombre }}
-      </label>
-    </div>
-  </div>
-  <ng-template #noServicios>
-    <p>No hay hoteles disponibles.</p>
-  </ng-template>
+<mat-card class="cardWithShadow theme-card">
+  <mat-card-header>
+    <mat-card-title class="m-b-0">Registro del hotel</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="b-t-1">
+    <form class="mb-5 row" [formGroup]="hotelForm"  (ngSubmit)="saveHotel()">
 
-  <!-- <div formArrayName="servicios">
-    <label>Servicios:</label>
-    <div *ngFor="let control of servicios.controls; let i = index" class="form-check">
-      <input type="checkbox" [formControlName]="i" class="form-check-input" id="servicio{{ i }}">
-      <label class="form-check-label" for="servicio{{ i }}">
-        {{ serviciosDisponibles[i].nombre }}
-      </label>
-    </div>
-  </div> -->
-  <!-- servicios -->
-  <!-- <div formArrayName="servicios">
-    <label>Servicios:</label>
-    <div *ngFor="let servicio of servicios.controls; let i = index">
-      <input [formControlName]="i" type="text">
-      <button type="button" (click)="removeServicio(i)">Eliminar</button>
-    </div>
-    <button type="button" (click)="addServicio()">Agregar Servicio</button>
-  </div> -->
-  <div>
-    <label for="descripcion">Descripción:</label>
-    <textarea id="descripcion" formControlName="descripcion"></textarea>
-  </div>
-  <div>
-    <label for="fecha_apertura">Fecha de Apertura:</label>
-    <input id="fecha_apertura" formControlName="fecha_apertura" type="date">
-  </div>
-  <div>
-    <label for="pagina_web">Página Web:</label>
-    <input id="pagina_web" formControlName="pagina_web" type="url">
-  </div>
-  <!-- <input type="file" (change)="onFileSelected($event)" multiple>
+        <div class="col-6 mb-2">
+          <label for="nombre">Nombre:</label>
+          <input class="form-control  {{ hasError('nombre') ? 'is-invalid' : ''}}" id="nombre" formControlName="nombre"  type="text" />
+          <div class="invalid-feedback" [ngSwitch]="getCurrentError('nombre')">
+            <span *ngSwitchCase="'required'">El campo nombre es requerido</span>
+          </div>
+        </div>
+        <div class="col-6 mb-2">
+          <label for="direccion">Dirección:</label>
+          <input class="form-control  {{ hasError('direccion') ? 'is-invalid' : ''}}" id="direccion" formControlName="direccion" type="text">
+          <div class="invalid-feedback" [ngSwitch]="getCurrentError('direccion')">
+            <span *ngSwitchCase="'required'">El campo direccion es requerido</span>
+          </div>
+        </div>
+        <div class="col-4 mb-2">
+          <label for="ciudad">Ciudad:</label>
+          <input class="form-control  {{ hasError('ciudad') ? 'is-invalid' : ''}}" id="ciudad" formControlName="ciudad"  type="text">
+          <div class="invalid-feedback" [ngSwitch]="getCurrentError('ciudad')">
+            <span *ngSwitchCase="'required'">El campo ciudad es requerido</span>
+          </div>
+        </div>
+        <div class="col-4 mb-2">
+          <label for="pais">País:</label>
+          <input class="form-control  {{ hasError('pais') ? 'is-invalid' : ''}}" id="pais" formControlName="pais"  type="text">
+          <div class="invalid-feedback" [ngSwitch]="getCurrentError('pais')">
+            <span *ngSwitchCase="'required'">El campo pais es requerido</span>
+          </div>
+        </div>
+        <div class="col-4 mb-2">
+          <label for="telefono">Teléfono:</label>
+          <input class="form-control  {{ hasError('telefono') ? 'is-invalid' : ''}}" id="telefono" formControlName="telefono" type="text">
+          <div class="invalid-feedback" [ngSwitch]="getCurrentError('telefono')">
+            <span *ngSwitchCase="'required'">El campo telefono es requerido</span>
+          </div>
+        </div>
+        <div class="col-6 mb-2">
+          <label for="email">Email:</label>
+          <input class="form-control  {{ hasError('email') ? 'is-invalid' : ''}}" id="email" formControlName="email" type="email">
+          <div class="invalid-feedback" [ngSwitch]="getCurrentError('email')">
+            <span *ngSwitchCase="'required'">El campo email es requerido</span>
+          </div>
+        </div>
+        <div class="col-6 mb-2">
+          <label for="clasificacion">Clasificación:</label>
+          <input class="form-control" id="clasificacion" formControlName="clasificacion" type="text">
+        </div>
+        <div class="col-12 mb-2" formArrayName="servicios" *ngIf="services.length > 0; else noServicios">
+          <label>Servicios:</label>
+          <div class="d-flex flex-wrap gap-2">
+            <div *ngFor="let servicio of services" class="form-check">
+              <input class="form-control" type="checkbox" class="form-check-input" id="servicio{{ servicio.id }}" (change)="actualizarServicios({ id: servicio.id, nombre: servicio.nombre })">
+              <label class="form-check-label" for="servicio{{ servicio.id }}">
+                {{ servicio.nombre }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <ng-template #noServicios>
+          <p class="col-12">No hay hoteles disponibles.</p>
+        </ng-template>
 
-  <div *ngIf="selectedImages.length > 0" class="preview-image">
-    <img *ngFor="let image of selectedImages" [src]="getImageSrc(image)" alt="Vista previa de la imagen">
-  </div> -->
+        <!-- <div formArrayName="servicios">
+          <label>Servicios:</label>
+          <div *ngFor="let control of servicios.controls; let i = index" class="form-check">
+            <input type="checkbox" [formControlName]="i" class="form-check-input" id="servicio{{ i }}">
+            <label class="form-check-label" for="servicio{{ i }}">
+              {{ serviciosDisponibles[i].nombre }}
+            </label>
+          </div>
+        </div> -->
+        <!-- servicios -->
+        <!-- <div formArrayName="servicios">
+          <label>Servicios:</label>
+          <div *ngFor="let servicio of servicios.controls; let i = index">
+            <input [formControlName]="i" type="text">
+            <button type="button" (click)="removeServicio(i)">Eliminar</button>
+          </div>
+          <button type="button" (click)="addServicio()">Agregar Servicio</button>
+        </div> -->
+        <div class="col-12 mb-2">
+          <label for="descripcion">Descripción:</label>
+          <textarea class="form-control" id="descripcion" formControlName="descripcion"></textarea>
+        </div>
+        <div class="col-3 mb-2">
+          <mat-form-field> 
+            <mat-label> Elija una fecha </mat-label> 
+            <input  matInput[ matDatepicker ]="selector" > 
+            <mat-hint > MM/DD/AAAA </mat-hint> 
+            <mat-datepicker-toggle  matIconSuffix[ para ]="selector" > </mat-datepicker-toggle> 
+            <mat-datepicker #selector > </mat-datepicker> 
+          </mat-form-field>
 
-  <div>
-    <label for="activo">Activo:</label>
-    <input id="activo" formControlName="activo" type="number">
-  </div>
-  <button type="submit" [disabled]="hotelForm.invalid">Enviar</button>
-</form>
+
+          <label for="fecha_apertura">Fecha de Apertura:</label>
+          <input class="form-control" id="fecha_apertura" formControlName="fecha_apertura" type="date">
+        </div>
+        <div class="col-6 mb-2">
+          <label for="pagina_web">Página Web:</label>
+          <input class="form-control" id="pagina_web" formControlName="pagina_web" type="url">
+        </div>
+        <div class="col-3 mb-2">
+          <label for="activo">Activo:</label>
+          <input class="form-control" id="activo" formControlName="activo" type="number">
+        </div>
+        <div class="col-12">
+
+          <!-- <input type="file" (change)="onFileSelected($event)" multiple>
+  
+          <div *ngIf="selectedImages.length > 0" class="preview-image">
+            <img *ngFor="let image of selectedImages" [src]="getImageSrc(image)" alt="Vista previa de la imagen">
+          </div> -->
+        </div>
+
+       
+
+        <div class="col-12 mb-2 d-flex justify-content-end">
+          <button class="btn btn-primary btn-sm" type="submit" [disabled]="hotelForm.invalid">Guardar</button>
+        </div>
+    </form>
+  </mat-card-content>
+</mat-card> 

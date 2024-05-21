@@ -13,6 +13,7 @@ import { PagesRoutes } from './pages.routing';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { HotelesComponent } from './hoteles/hoteles.component';
 import { HotelesService } from 'src/app/core/services/hoteles.service';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { HotelesService } from 'src/app/core/services/hoteles.service';
     ReactiveFormsModule,
     TablerIconsModule.pick(TablerIcons),
     MatNativeDateModule,
-    ReactiveFormsModule
+    MatCardModule
   ],
   declarations: [
     UsuarioComponent,

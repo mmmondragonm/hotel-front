@@ -5,11 +5,13 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ServiciosService } from 'src/app/core/services/servicios.service';
 import { Servicios } from 'src/app/core/models/servicios.models';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-hoteles-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatDatepickerModule, MatDatepickerModule],
   templateUrl: './hoteles-form.component.html',
   styleUrl: './hoteles-form.component.scss'
 })
