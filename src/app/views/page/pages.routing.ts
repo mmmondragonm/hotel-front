@@ -28,6 +28,10 @@ export const PagesRoutes: Routes = [
             component: HotelesFormComponent,
           },
           {
+            path: ':id/editar',
+            component: HotelesFormComponent,
+          },
+          {
             path: 'habitaciones',
             component: HabitacionesComponent,
           },

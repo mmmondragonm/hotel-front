@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HotelesService } from '../../../../core/services/hoteles.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule, NumberSymbol } from '@angular/common';
 import { ServiciosService } from 'src/app/core/services/servicios.service';
 import { Servicios } from 'src/app/core/models/servicios.models';
 import { MatCardModule } from '@angular/material/card';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+
 
 @Component({
   selector: 'app-hoteles-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule, MatDatepickerModule, MatDatepickerModule],
+  imports: [CommonModule, ReactiveFormsModule, MatCardModule, RouterModule ],
   templateUrl: './hoteles-form.component.html',
   styleUrl: './hoteles-form.component.scss'
 })
-export class HotelesFormComponent {
+export class HotelesFormComponent implements OnInit {
   
   serviciosSeleccionados: { id: string, nombre: string }[] = [];
   services: Servicios[] = [];
@@ -34,18 +34,22 @@ export class HotelesFormComponent {
     fecha_apertura : new FormControl(''),
     imagenes : new FormControl(''),
     pagina_web : new FormControl(''),
-    activo : new FormControl(''),
+    // activo : new FormControl(''),
   })
+
+  hotelId?: number;
 
   constructor(
     private hotelesService: HotelesService,
     private serviciosService: ServiciosService,
-    private router: Router 
+    private router: Router,
+    private route: ActivatedRoute
   ){}
 
 
   ngOnInit(): void {
     this.loadServicios();
+    this.loadDataIntoForm();
   }
 
   private loadServicios(): void {
@@ -84,18 +88,24 @@ export class HotelesFormComponent {
   }
 
   saveHotel(): void {
-
-    // if (this.selectedImages) {
-    //   this.hotelForm.patchValue({ imagenes: this.selectedImages });
-    // }
     const serviciosJSON = JSON.stringify(this.hotelForm.get('servicios')?.value);
 
     // Crear un nuevo objeto para enviar al servidor, copiando los otros campos del formulario
     const datosFormulario = { ...this.hotelForm.value, servicios: serviciosJSON };
+    console.log(datosFormulario);
+    // if (this.selectedImages) {
+    //   this.hotelForm.patchValue({ imagenes: this.selectedImages });
+    // }
 
-    this.hotelesService.createHotel(datosFormulario).subscribe(hotel => {
-      this.router.navigateByUrl('/hoteles');
-    })
+    if (this.hotelId){
+      this.hotelesService.updateHotel(this.hotelId, datosFormulario).subscribe(hotel => {
+        this.router.navigateByUrl('/hoteles');
+      }) 
+    } else {
+      this.hotelesService.createHotel(datosFormulario).subscribe(hotel => {
+        this.router.navigateByUrl('/hoteles');
+      })
+    }
   }
 
   hasError(field: string): boolean {
@@ -117,5 +127,19 @@ export class HotelesFormComponent {
         return '';
       
     return errors[0];
+  }
+
+  getFormTitle(): string {
+    return this.hotelId ? 'Editar hotel' : 'Registrar hotel';
+  }
+
+  private loadDataIntoForm(): void{
+    this.hotelId = Number(this.route.snapshot.paramMap.get('id'));
+
+    if(this.hotelId) {
+      this.hotelesService.getHotel(this.hotelId).subscribe(hotel => {
+        this.hotelForm.patchValue(hotel)
+      })
+    }
   }
 }

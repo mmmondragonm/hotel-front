@@ -18,7 +18,7 @@ export class HotelesService {
   }
 
   getHotel(id: number):Observable<Hotel> {
-    return this.http.get<Hotel>(`${this.API_URL}/user/${id}`);
+    return this.http.get<Hotel>(`${this.API_URL}/hoteles/${id}`);
   } 
 
   createHotel(data: Hotel):Observable<Hotel> {
@@ -26,10 +26,10 @@ export class HotelesService {
   } 
 
   updateHotel(id:number,  data: Hotel):Observable<Hotel> {
-    return this.http.put<Hotel>(`this.API_URL}/user/${id}`, data);
+    return this.http.put<Hotel>(`${this.API_URL}/hoteles/${id}`, data);
   } 
 
   deleteHotel(id:number):Observable<any> {
-    return this.http.delete<any>(`${this.API_URL}/user/${id}`);
+    return this.http.delete<any>(`${this.API_URL}/hoteles/${id}`);
   } 
 }
